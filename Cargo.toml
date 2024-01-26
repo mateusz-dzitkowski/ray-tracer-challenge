@@ -4,3 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+nalgebra = { version = "0.32.3", features = ["rand"] }
+
+[dev-dependencies]
+rstest = "0.18.2"
