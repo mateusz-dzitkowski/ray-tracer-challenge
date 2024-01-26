@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+derive_more = "0.99.17"
 nalgebra = { version = "0.32.3", features = ["rand"] }
+rand = "0.8.5"
 
 [dev-dependencies]
 rstest = "0.18.2"
