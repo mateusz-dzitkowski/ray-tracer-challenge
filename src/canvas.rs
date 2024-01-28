@@ -1,4 +1,4 @@
-use crate::colour::Colour;
+use crate::colour::{colour_to_string, Colour};
 use std::fs;
 
 pub struct Canvas<const W: usize, const H: usize>(Vec<Vec<Colour>>);
@@ -30,7 +30,7 @@ impl<const W: usize, const H: usize> From<Canvas<W, H>> for String {
             .into_iter()
             .map(|row| {
                 row.into_iter()
-                    .map(|colour| Self::from(colour))
+                    .map(colour_to_string)
                     .collect::<Vec<_>>()
                     .join("\n")
             })
@@ -49,6 +49,7 @@ impl<const W: usize, const H: usize> Default for Canvas<W, H> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::colour;
     use rstest::{fixture, rstest};
 
     #[fixture]
@@ -63,7 +64,7 @@ mod tests {
 
     #[rstest]
     fn test_write_pixel_to_canvas(mut blank: Canvas<10, 20>) {
-        let pixel: Colour = Colour::green();
+        let pixel: Colour = colour::green();
         blank.set(5, 10, pixel);
         assert_eq!(blank.get(5, 10), pixel);
     }
@@ -85,9 +86,9 @@ mod tests {
         let ppm = blank_small.to_ppm();
         let lines: Vec<&str> = ppm.split("\n").collect();
         assert_eq!(lines.len(), 19);
-        assert_eq!(lines[3], "255 0 0");
+        assert_eq!(lines[7], "0 0 255");
         assert_eq!(lines[10], "0 128 0");
-        assert_eq!(lines[17], "0 0 255");
+        assert_eq!(lines[13], "255 0 0");
     }
 
     #[rstest]
