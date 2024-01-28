@@ -3,7 +3,7 @@ use nalgebra::Vector3;
 use std::ops::{Div, Mul};
 
 #[derive(Add, Sub, Neg, Copy, Clone, PartialEq, Debug, Default)]
-pub struct Vector(Vector3<f32>);
+pub struct Vector(pub Vector3<f32>);
 
 impl Vector {
     pub fn new(x: f32, y: f32, z: f32) -> Self {

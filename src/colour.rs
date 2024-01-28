@@ -2,7 +2,7 @@ use derive_more::{Add, Sub};
 use nalgebra::Vector3;
 use std::ops::{Div, Mul};
 
-#[derive(Add, Sub, Copy, Clone, PartialEq, Debug, Default)]
+#[derive(Add, Sub, Copy, Clone, PartialEq, Debug)]
 pub struct Colour(pub Vector3<f32>);
 
 impl Colour {
@@ -62,6 +62,12 @@ impl From<Colour> for String {
             .map(|colour| ((colour.max(0.).min(1.) * 255.).round() as u8).to_string())
             .collect();
         rgb.join(" ")
+    }
+}
+
+impl Default for Colour {
+    fn default() -> Self {
+        Self::black()
     }
 }
 

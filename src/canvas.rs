@@ -1,6 +1,7 @@
 use crate::colour::Colour;
+use std::fs;
 
-struct Canvas<const W: usize, const H: usize>([[Colour; W]; H]);
+pub struct Canvas<const W: usize, const H: usize>(Vec<Vec<Colour>>);
 
 impl<const W: usize, const H: usize> Canvas<W, H> {
     pub fn get(self, w: usize, h: usize) -> Colour {
@@ -8,26 +9,40 @@ impl<const W: usize, const H: usize> Canvas<W, H> {
     }
 
     pub fn set(&mut self, w: usize, h: usize, colour: Colour) {
-        self.0[h][w] = colour;
+        if (w < W) & (h < H) {
+            self.0[h][w] = colour;
+        }
     }
 
     pub fn to_ppm(self) -> String {
-        let pixels: String = self.into();
-        format!("P3\n{} {}\n255\n{}\n", W, H, pixels)
+        format!("P3\n{} {}\n255\n{}\n", W, H, String::from(self))
+    }
+
+    pub fn to_ppm_file(self, path: &str) {
+        fs::write(path, self.to_ppm()).expect(format!("Unable to write to {}", path).as_str())
     }
 }
 
-impl<const W: usize, const H: usize> Into<String> for Canvas<W, H> {
-    fn into(self) -> String {
-        self.0
-            .map(|row| row.map(|colour| String::from(colour)).join("\n"))
+impl<const W: usize, const H: usize> From<Canvas<W, H>> for String {
+    fn from(value: Canvas<W, H>) -> Self {
+        value
+            .0
+            .into_iter()
+            .map(|row| {
+                row.into_iter()
+                    .map(|colour| Self::from(colour))
+                    .collect::<Vec<_>>()
+                    .join("\n")
+            })
+            .rev()
+            .collect::<Vec<_>>()
             .join("\n")
     }
 }
 
 impl<const W: usize, const H: usize> Default for Canvas<W, H> {
     fn default() -> Self {
-        Self([[Colour::default(); W]; H])
+        Self(vec![vec![Colour::default(); W]; H])
     }
 }
 
