@@ -54,6 +54,17 @@ impl Mul<f32> for Colour {
     }
 }
 
+impl From<Colour> for String {
+    fn from(colour: Colour) -> String {
+        let rgb: Vec<_> = colour
+            .0
+            .iter()
+            .map(|colour| ((colour.max(0.).min(1.) * 255.).round() as u8).to_string())
+            .collect();
+        rgb.join(" ")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -97,5 +108,14 @@ mod tests {
             u * v,
             Colour::new(u.0.x * v.0.x, u.0.y * v.0.y, u.0.z * v.0.z)
         );
+    }
+
+    #[rstest]
+    #[case(Colour::red(), "255 0 0".into())]
+    #[case(Colour::green(), "0 255 0".into())]
+    #[case(Colour::blue(), "0 0 255".into())]
+    #[case(Colour::new(-1., 0.5, 1.5), "0 128 255".into())]
+    fn test_into_string(#[case] colour: Colour, #[case] expected: String) {
+        assert_eq!(String::from(colour), expected)
     }
 }
