@@ -24,7 +24,6 @@ impl<const W: usize, const H: usize> Default for Canvas<W, H> {
 
 #[cfg(test)]
 mod tests {
-    use rand::random;
     use super::*;
     use rstest::{fixture, rstest};
 
@@ -40,7 +39,7 @@ mod tests {
 
     #[rstest]
     fn test_write_pixel_to_canvas(mut blank: Canvas<10, 20>) {
-        let pixel: Colour = random();
+        let pixel: Colour = Colour::green();
         *blank.get_mut(5, 10) = pixel;
         assert_eq!(blank.get(5, 10), pixel);
     }
