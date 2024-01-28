@@ -13,14 +13,14 @@ impl<const W: usize, const H: usize> Canvas<W, H> {
 
     pub fn to_ppm(self) -> String {
         let pixels: String = self.into();
-        format!("P3\n{} {}\n255\n{}", W, H, pixels)
+        format!("P3\n{} {}\n255\n{}\n", W, H, pixels)
     }
 }
 
 impl<const W: usize, const H: usize> Into<String> for Canvas<W, H> {
     fn into(self) -> String {
         self.0
-            .map(|row| row.map(|colour| String::from(colour)).join(" "))
+            .map(|row| row.map(|colour| String::from(colour)).join("\n"))
             .join("\n")
     }
 }
@@ -69,9 +69,14 @@ mod tests {
         blank_small.set(4, 2, Colour::new(-0.5, 0., 1.0));
         let ppm = blank_small.to_ppm();
         let lines: Vec<&str> = ppm.split("\n").collect();
-        assert_eq!(lines.len(), 6);
-        assert_eq!(lines[3], "255 0 0 0 0 0 0 0 0 0 0 0 0 0 0");
-        assert_eq!(lines[4], "0 0 0 0 0 0 0 128 0 0 0 0 0 0 0");
-        assert_eq!(lines[5], "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255");
+        assert_eq!(lines.len(), 19);
+        assert_eq!(lines[3], "255 0 0");
+        assert_eq!(lines[10], "0 128 0");
+        assert_eq!(lines[17], "0 0 255");
+    }
+
+    #[rstest]
+    fn test_ends_with_newline(blank_small: Canvas<5, 3>) {
+        assert!(blank_small.to_ppm().ends_with("\n"));
     }
 }
