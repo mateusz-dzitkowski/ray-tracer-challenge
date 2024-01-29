@@ -1,20 +1,20 @@
-use nalgebra::{Point2, Vector2};
-
 mod canvas;
 mod colour;
+mod types;
 
 use canvas::Canvas;
+use types::*;
 
 #[derive(Clone, Copy)]
 struct Projectile {
-    position: Point2<f32>,
-    velocity: Vector2<f32>,
+    position: Point,
+    velocity: Vector,
 }
 
 #[derive(Clone, Copy)]
 struct Environment {
-    gravity: Vector2<f32>,
-    wind: Vector2<f32>,
+    gravity: Vector,
+    wind: Vector,
 }
 
 fn tick<const W: usize, const H: usize>(p: &mut Projectile, c: &mut Canvas<W, H>, e: Environment) {
@@ -29,13 +29,13 @@ fn tick<const W: usize, const H: usize>(p: &mut Projectile, c: &mut Canvas<W, H>
 
 fn main() {
     let mut p = Projectile {
-        position: Point2::new(0., 1.),
-        velocity: Vector2::new(1., 1.8).normalize() * 11.25,
+        position: Point::new(0., 1., 0.),
+        velocity: Vector::new(1., 1.8, 0.).normalize() * 11.25,
     };
 
     let e = Environment {
-        gravity: Vector2::new(0., -0.2),
-        wind: Vector2::new(-0.01, 0.),
+        gravity: Vector::new(0., -0.2, 0.),
+        wind: Vector::new(-0.01, 0., 0.),
     };
 
     let mut c: Canvas<900, 550> = Canvas::default();
