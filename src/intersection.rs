@@ -1,5 +1,5 @@
-use crate::types::Field;
 use crate::sphere::Sphere;
+use crate::types::Field;
 
 #[derive(PartialEq)]
 pub struct Intersection {

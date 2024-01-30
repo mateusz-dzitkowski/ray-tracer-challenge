@@ -1,9 +1,9 @@
 mod canvas;
 mod colour;
-mod types;
+mod intersection;
 mod ray;
 mod sphere;
-mod intersection;
+mod types;
 
 use canvas::Canvas;
 use num_traits::FloatConst;

@@ -1,4 +1,4 @@
-use crate::types::{Point, Field};
+use crate::types::{Field, Point};
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub struct Sphere {
