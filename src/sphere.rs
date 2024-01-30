@@ -1,5 +1,6 @@
 use crate::types::{Point, Field};
 
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub struct Sphere {
     pub origin: Point,
     pub radius: Field,

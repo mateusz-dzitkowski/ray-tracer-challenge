@@ -1,5 +1,6 @@
 use crate::types::{Point, Vector, Field};
 use crate::sphere::Sphere;
+use crate::intersection::Intersection;
 
 struct Ray {
     origin: Point,
@@ -15,7 +16,7 @@ impl Ray {
         self.origin + self.direction * t
     }
 
-    fn sphere_intersection(&self, sphere: &Sphere) -> Option<(Field, Field)> {
+    fn sphere_intersection(&self, sphere: Sphere) -> Option<(Intersection, Intersection)> {
         // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
         let Self { origin: o, direction: u } = self;
         let Sphere { origin: c, radius: r } = sphere;
@@ -28,7 +29,7 @@ impl Ray {
         } else {
             let first = (-b - nabla.sqrt()) / a;
             let second = (-b + nabla.sqrt()) / a;
-            Some((first, second))
+            Some((Intersection::new(first, sphere), Intersection::new(second, sphere)))
         }
     }
 }
@@ -58,9 +59,9 @@ mod tests {
             Vector::new(0., 0., 1.),
         );
         let s = Sphere::default();
-        let (first, second) = r.sphere_intersection(&s).unwrap();
-        assert_eq!(first, 4.);
-        assert_eq!(second, 6.);
+        let (first, second) = r.sphere_intersection(s).unwrap();
+        assert_eq!(first.t, 4.);
+        assert_eq!(second.t, 6.);
     }
 
     #[rstest]
@@ -70,9 +71,9 @@ mod tests {
             Vector::new(0., 0., 1.),
         );
         let s = Sphere::default();
-        let (first, second) = r.sphere_intersection(&s).unwrap();
-        assert_eq!(first, 5.);
-        assert_eq!(second, 5.);
+        let (first, second) = r.sphere_intersection(s).unwrap();
+        assert_eq!(first.t, 5.);
+        assert_eq!(second.t, 5.);
     }
 
     #[rstest]
@@ -82,7 +83,7 @@ mod tests {
             Vector::new(0., 0., 1.),
         );
         let s = Sphere::default();
-        assert!(r.sphere_intersection(&s).is_none());
+        assert!(r.sphere_intersection(s).is_none());
     }
 
     #[rstest]
@@ -92,9 +93,20 @@ mod tests {
             Vector::new(0., 0., 1.),
         );
         let s = Sphere::default();
-        let (first, second) = r.sphere_intersection(&s).unwrap();
-        assert_eq!(first, -1.);
-        assert_eq!(second, 1.);
+        let (first, second) = r.sphere_intersection(s).unwrap();
+        assert_eq!(first.t, -1.);
+        assert_eq!(second.t, 1.);
+    }
+
+    #[rstest]
+    fn test_intersect_sets_the_object_on_the_intersection() {
+        let r = Ray::new(
+            Point::new(0., 0., -5.),
+            Vector::new(0., 0., 1.),
+        );
+        let s = Sphere::default();
+        let (first, second) = r.sphere_intersection(s).unwrap();
+        assert_eq!(first.object, s);
+        assert_eq!(second.object, s);
     }
 }
-
