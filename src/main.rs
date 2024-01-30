@@ -1,6 +1,8 @@
 mod canvas;
 mod colour;
 mod types;
+mod ray;
+mod sphere;
 
 use canvas::Canvas;
 use num_traits::FloatConst;
