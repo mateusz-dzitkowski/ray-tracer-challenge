@@ -1,10 +1,13 @@
 mod canvas;
 mod colour;
 mod intersection;
+mod light;
+mod material;
 mod ray;
 mod sphere;
 mod types;
 
+use crate::material::Material;
 use canvas::Canvas;
 use num_traits::FloatConst;
 use ray::Ray;
@@ -19,7 +22,7 @@ const CANVAS_PIXELS: usize = 1000;
 const PIXEL_SIZE: f32 = WALL_SIZE as f32 / CANVAS_PIXELS as f32;
 
 fn main() {
-    let shape = Sphere::new(Point::new(1., 1., 0.), 0.6);
+    let shape = Sphere::new(Point::new(1., 1., 0.), 0.6, Material::default());
     let colour = colour::red();
     let mut canvas: Canvas<CANVAS_PIXELS, CANVAS_PIXELS> = Canvas::default();
 

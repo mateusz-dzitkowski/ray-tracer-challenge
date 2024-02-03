@@ -14,16 +14,14 @@ pub type Scale = Scale3<Field>;
 
 pub type Rotation = Rotation3<Field>;
 
-
 pub fn reflect(incoming: Vector, normal: Vector) -> Vector {
     incoming - normal * 2. * incoming.dot(&normal)
 }
 
-
 #[cfg(test)]
 mod tests {
-    use approx::assert_relative_eq;
     use super::*;
+    use approx::assert_relative_eq;
     use rstest::rstest;
 
     #[rstest]

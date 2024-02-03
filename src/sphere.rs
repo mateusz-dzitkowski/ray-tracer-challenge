@@ -1,14 +1,20 @@
+use crate::material::Material;
 use crate::types::{Field, Point, Vector};
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub struct Sphere {
     pub origin: Point,
     pub radius: Field,
+    pub material: Material,
 }
 
 impl Sphere {
-    pub fn new(origin: Point, radius: Field) -> Self {
-        Self { origin, radius }
+    pub fn new(origin: Point, radius: Field, material: Material) -> Self {
+        Self {
+            origin,
+            radius,
+            material,
+        }
     }
 
     pub fn normal_at(&self, point: Point) -> Option<Vector> {
@@ -22,19 +28,19 @@ impl Sphere {
 
 impl Default for Sphere {
     fn default() -> Self {
-        Self::new(Point::default(), 1.)
+        Self::new(Point::default(), 1., Material::default())
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rstest::{fixture, rstest};
     use approx::assert_relative_eq;
+    use rstest::{fixture, rstest};
 
     #[fixture]
     fn sphere() -> Sphere {
-        Sphere::new(Point::new(1., 0., 0.), 1.)
+        Sphere::new(Point::new(1., 0., 0.), 1., Material::default())
     }
 
     #[rstest]

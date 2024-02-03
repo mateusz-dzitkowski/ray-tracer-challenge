@@ -25,6 +25,7 @@ impl Ray {
         let Sphere {
             origin: c,
             radius: r,
+            material: _,
         } = sphere;
         let a = u.norm_squared();
         let b = u.dot(&(o - c));
