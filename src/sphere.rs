@@ -1,5 +1,4 @@
 use crate::types::{Field, Point, Vector};
-use approx::assert_relative_eq;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub struct Sphere {
@@ -31,6 +30,7 @@ impl Default for Sphere {
 mod tests {
     use super::*;
     use rstest::{fixture, rstest};
+    use approx::assert_relative_eq;
 
     #[fixture]
     fn sphere() -> Sphere {
