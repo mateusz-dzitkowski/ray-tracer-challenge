@@ -3,8 +3,8 @@ use crate::sphere::Sphere;
 use crate::types::{Field, Point, Vector};
 
 pub struct Ray {
-    origin: Point,
-    direction: Vector,
+    pub origin: Point,
+    pub direction: Vector,
 }
 
 impl Ray {

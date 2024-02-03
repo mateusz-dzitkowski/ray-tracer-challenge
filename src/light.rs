@@ -1,10 +1,11 @@
-use crate::colour::{black, white, Colour};
+use crate::colour::{white, Colour};
 use crate::material::Material;
 use crate::types::{reflect, Field, Point, Scale, Vector};
 
+#[derive(Copy, Clone)]
 pub struct LightSource {
-    origin: Point,
-    colour: Colour,
+    pub origin: Point,
+    pub colour: Colour,
 }
 
 impl LightSource {
