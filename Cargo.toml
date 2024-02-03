@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+approx = "0.5.1"
 derive_more = "0.99.17"
 nalgebra = { version = "0.32.3", features = ["rand"] }
 num-traits = "0.2.17"
