@@ -2,7 +2,7 @@ use crate::intersection::Intersection;
 use crate::sphere::Sphere;
 use crate::types::{Field, Point, Vector};
 
-struct Ray {
+pub struct Ray {
     origin: Point,
     direction: Vector,
 }
@@ -12,11 +12,11 @@ impl Ray {
         Self { origin, direction }
     }
 
-    fn position(&self, t: Field) -> Point {
+    pub fn position(&self, t: Field) -> Point {
         self.origin + self.direction * t
     }
 
-    fn sphere_intersection(&self, sphere: Sphere) -> Option<(Intersection, Intersection)> {
+    pub fn sphere_intersection(&self, sphere: Sphere) -> Option<(Intersection, Intersection)> {
         // https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
         let Self {
             origin: o,

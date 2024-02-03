@@ -7,19 +7,33 @@ mod types;
 
 use canvas::Canvas;
 use num_traits::FloatConst;
+use ray::Ray;
+use sphere::Sphere;
 use types::*;
 
+const RAY_ORIGIN: Point = Point::new(0., 0., -5.);
+const WALL_Z: f32 = 10.;
+const WALL_SIZE: usize = 10;
+const HALF_WALL_SIZE: f32 = WALL_SIZE as f32 / 2.;
+const CANVAS_PIXELS: usize = 1000;
+const PIXEL_SIZE: f32 = WALL_SIZE as f32 / CANVAS_PIXELS as f32;
+
 fn main() {
-    let mut canvas: Canvas<51, 51> = Canvas::default();
-    let c = colour::red();
-    for n in 0..12 {
-        let p = Point::new(20., 0., 0.);
-        let rotation = Rotation::new(Vector::new(0., 0., f32::PI() * n as f32 / 6.));
-        let translation = Translation::new(25., 25., 0.);
-        let w = translation * rotation * p;
-        let i = w.x.round() as usize;
-        let j = w.y.round() as usize;
-        canvas.set(i, j, c);
+    let shape = Sphere::new(Point::new(1., 1., 0.), 0.6);
+    let colour = colour::red();
+    let mut canvas: Canvas<CANVAS_PIXELS, CANVAS_PIXELS> = Canvas::default();
+
+    for y in 0..CANVAS_PIXELS {
+        let world_y = -HALF_WALL_SIZE + PIXEL_SIZE * y as f32;
+        for x in 0..CANVAS_PIXELS {
+            let world_x = -HALF_WALL_SIZE + PIXEL_SIZE * x as f32;
+            let position = Point::new(world_x, world_y, WALL_Z);
+            let ray = Ray::new(RAY_ORIGIN, (position - RAY_ORIGIN).normalize());
+            if let Some(_) = ray.sphere_intersection(shape) {
+                canvas.set(x, y, colour);
+            }
+        }
     }
-    canvas.to_ppm_file("clock.ppm");
+
+    canvas.to_ppm_file("sphere.ppm");
 }
